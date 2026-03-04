@@ -1,0 +1,4 @@
+templates/agent/node_modules/
+templates/agent/orchestrator.log
+templates/agent/package-lock.json
+templates/agent/budget.json

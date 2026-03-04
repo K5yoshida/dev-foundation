@@ -1,0 +1,32 @@
+{
+  "name": "agent-orchestrator",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Claude Code × OpenAI Codex SDK orchestrator",
+  "scripts": {
+    "orchestrate": "tsx orchestrate.ts",
+    "next": "tsx orchestrate.ts next",
+    "dry": "tsx orchestrate.ts --dry-run next",
+    "chain:a": "tsx orchestrate.ts --chain A",
+    "chain:b": "tsx orchestrate.ts --chain B",
+    "chain:c": "tsx orchestrate.ts --chain C",
+    "chain:d": "tsx orchestrate.ts --chain D",
+    "chain:e": "tsx orchestrate.ts --chain E",
+    "chain:f": "tsx orchestrate.ts --chain F",
+    "new": "tsx orchestrate.ts --chain A --feature",
+    "release": "tsx orchestrate.ts --chain C",
+    "think": "tsx orchestrate.ts --prompt product-conviction",
+    "auto": "tsx orchestrate.ts auto",
+    "auto:dry": "tsx orchestrate.ts --dry-run auto"
+  },
+  "dependencies": {
+    "@anthropic-ai/claude-agent-sdk": "^0.1.0",
+    "@modelcontextprotocol/sdk": "^1.0.0"
+  },
+  "devDependencies": {
+    "tsx": "^4.19.0",
+    "typescript": "^5.6.0",
+    "@types/node": "^22.0.0"
+  }
+}

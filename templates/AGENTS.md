@@ -69,14 +69,17 @@ docs/                   # Design documents (48 files, Japanese)
 specs/                  # Feature specifications (Spec-Driven Development)
 memory/                 # Immutable principles (portable)
 tasks/                  # Sprint tasks + lessons learned
-.claude/                # Claude Code-specific config
-  agent_docs/           # Developer reference docs
+.agent/                 # Cross-agent orchestration & shared files
+  shared/               # Shared logs (IMPLEMENTATION_STATUS, CONVICTION_LOG, LEARN_LOG)
+  prompts/              # Prompt library (23 prompts, 9 categories)
+  docs/                 # Developer reference docs
+.claude/                # Claude Code-specific config (settings, hooks, skills)
 ```
 
 ## Before You Implement
 
 1. Read `docs/INDEX.md` for the document map, then read the relevant design doc
-2. Check `.claude/IMPLEMENTATION_STATUS.md` for current priorities and v2 status
+2. Check `.agent/shared/IMPLEMENTATION_STATUS.md` for current priorities and v2 status
 3. If the feature has a spec, read `specs/{number}-{name}/`
 4. Complete the pre-implementation checklist: `docs/31_実装着手前チェックリスト.md`
 5. Review immutable principles: `memory/constitution.md`
@@ -182,14 +185,14 @@ v2 Wave 1 is considered DONE when all 5 criteria pass:
 ## 「次は？」判定ロジック
 
 ユーザーが「次は？」と聞いたら、以下のロジックに従って最適なプロンプトを提案する。
-プロンプトは `.claude/prompts/` 配下の `.md` ファイル。内容を読んでその通りに実行する。
+プロンプトは `.agent/prompts/` 配下の `.md` ファイル。内容を読んでその通りに実行する。
 
 ```
 0. ラテラルチェック（最優先）
-   ├─ .claude/CONVICTION_LOG.md が空 or 直近2週間で未実行？
-   │   → .claude/prompts/00-think/product-conviction.md を実行
+   ├─ .agent/shared/CONVICTION_LOG.md が空 or 直近2週間で未実行？
+   │   → .agent/prompts/00-think/product-conviction.md を実行
    └─ Shipした機能の ship-and-learn が未実行？
-       → .claude/prompts/00-think/ship-and-learn.md を実行
+       → .agent/prompts/00-think/ship-and-learn.md を実行
 
 1. specs/ の状態を確認し、優先順位で判定:
    ├─ spec.md がない機能がある？ → 01-spec/spec-create.md

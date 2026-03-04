@@ -133,6 +133,21 @@ budget: {
 │   ├── task-parser.ts      # tasks.md パーサー
 │   ├── budget-tracker.ts   # 予算管理
 │   └── logger.ts           # ログ出力
+├── shared/                 # 全エージェント共有ログ
+│   ├── IMPLEMENTATION_STATUS.md  # 実装進捗台帳
+│   ├── CONVICTION_LOG.md         # 確信度チェック履歴
+│   └── LEARN_LOG.md              # Ship後学習の履歴
+├── prompts/                # プロンプトライブラリ（23個）
+│   ├── 00-think/           # プロダクト思考
+│   ├── 01-spec/            # 仕様策定
+│   ├── 02-plan/            # 計画
+│   ├── 03-build/           # 実装
+│   ├── 04-quality/         # 品質
+│   ├── 05-plumbing/        # 配管（データフロー等）
+│   ├── 06-polish/          # 磨き込み
+│   ├── 07-docs/            # ドキュメント
+│   └── 08-ops/             # 運用
+├── docs/                   # 開発者リファレンス
 ├── package.json
 ├── tsconfig.json
 └── README.md
@@ -140,8 +155,7 @@ budget: {
 
 ## 他プロジェクトへの導入
 
-1. `.agent/` ディレクトリをコピー
+1. `.agent/` ディレクトリをコピー（shared/, prompts/, docs/ 含む）
 2. `cd .agent && npm install`
 3. API キーを設定
-4. `.claude/prompts/` にプロンプトライブラリを配置
-5. `npx tsx .agent/orchestrate.ts next` で開始
+4. `npx tsx .agent/orchestrate.ts next` で開始

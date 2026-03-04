@@ -85,6 +85,26 @@ setup.md                      ← AI が読んで実行する9ステップ手順
 
 ---
 
+## 適用事例
+
+### [tokusetu-page](https://github.com/K5yoshida/tokusetu-page)
+
+CVR特化プラットフォーム（Next.js / Supabase / Stripe）で、この基盤を最初に適用したプロジェクトです。
+
+実際にどう使われているかの参考になるファイル:
+
+| ファイル | 見どころ |
+|---------|---------|
+| [AGENTS.md](https://github.com/K5yoshida/tokusetu-page/blob/main/AGENTS.md) | Claude Code / Codex の役割分担、ハンドオフプロトコル |
+| [docs/INDEX.md](https://github.com/K5yoshida/tokusetu-page/blob/main/docs/INDEX.md) | 48個のドキュメントを5層に分類 + 5つの読み順パス |
+| [specs/README.md](https://github.com/K5yoshida/tokusetu-page/blob/main/specs/README.md) | Phase 0 テストスケルトン付きの仕様テンプレート |
+| [.claude/hooks/](https://github.com/K5yoshida/tokusetu-page/tree/main/.claude/hooks) | console.log / any型 の自動ブロックが実稼働中 |
+| [.claude/IMPLEMENTATION_STATUS.md](https://github.com/K5yoshida/tokusetu-page/blob/main/.claude/IMPLEMENTATION_STATUS.md) | v2完了の5つの客観基準を定義 |
+
+> テンプレートの各ファイルが実プロジェクトでどうカスタマイズされるかを見ると、setup.md の手順がより具体的にイメージできます。
+
+---
+
 ## ライセンス
 
 MIT

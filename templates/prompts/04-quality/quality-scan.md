@@ -31,6 +31,7 @@ npm run test
 - N+1問題
 - 不要な再レンダリング
 - バンドルサイズ
+- `.claude/LEARN_LOG.md` の直近学習（HIT/MISS/UNKNOWN）を踏まえて評価基準を更新
 
 ### Phase 5: 修正
 Critical → High → Medium の順に修正。

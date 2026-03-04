@@ -27,4 +27,6 @@ npm run test
 | 全自動チェック通過 | |
 | セキュリティ問題なし | |
 | データ整合性問題なし | |
+| Business Impact Hypothesis 記載済み | |
+| Ship & Learn Plan 記載済み | |
 | **リリース判定** | GO / NO-GO |

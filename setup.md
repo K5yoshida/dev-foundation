@@ -28,6 +28,7 @@ scaffold/templates/lessons.md         → tasks/lessons.md
 scaffold/templates/check-code-quality.sh → .claude/hooks/check-code-quality.sh
 scaffold/templates/stop-reminder.sh   → .claude/hooks/stop-reminder.sh
 scaffold/templates/commitlint.config.js → commitlint.config.js
+scaffold/templates/.claudeignore      → .claudeignore
 ```
 
 After copying, make hook scripts executable:
@@ -292,6 +293,7 @@ After completing all steps, the project will have:
 
 ```
 project/
+├── .claudeignore                # [Copied] Block AI from reading .env secrets
 ├── AGENTS.md                    # [Generated] Cross-agent instructions
 ├── commitlint.config.js         # [Copied] Commit message rules
 ├── memory/

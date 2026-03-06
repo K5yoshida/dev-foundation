@@ -1,0 +1,13 @@
+# Security: prevent Claude Code from reading secret files
+# This file blocks AI coding tools from accessing environment variables
+# containing API keys, database passwords, and other credentials.
+#
+# Reference: https://www.knostic.ai/blog/claude-loads-secrets-without-permission
+
+.env
+.env.*
+.env.local
+.env.production
+.env.development
+.env.staging
+.vercel/.env*

@@ -246,6 +246,12 @@ if [ ! -f "$TARGET_DIR/.claude/hooks/claude-code-review.sh" ]; then
   echo "  ✓ .claude/hooks/claude-code-review.sh (settings.local.json で有効化してください)"
 fi
 
+# settings.local.json サンプル (ユーザーがコピーして使う)
+if [ ! -f "$TARGET_DIR/.claude/settings.local.json.example" ]; then
+  cp "$COF_DIR/project-root/.claude/settings.local.json.example" "$TARGET_DIR/.claude/settings.local.json.example"
+  echo "  ✓ .claude/settings.local.json.example (cp で有効化可)"
+fi
+
 # 過去事故ファイル (入力があれば雛形作成)
 if [ -n "$PAST_INCIDENT_SUMMARY" ]; then
   INCIDENT_FILE="$TARGET_DIR/memory/past-incident-initial.md"

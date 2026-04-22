@@ -1,26 +1,32 @@
 #!/usr/bin/env bash
 # ============================================================================
-# Claude Ops Framework: Code Review Hook
+# Claude Ops Framework: L1 Detection Hook (PreToolUse)
 # ============================================================================
 #
-# 目的: L1 操作前に自動で Red Team レビューを起動するためのリマインダー hook
+# 目的: L1 該当操作を自動検知し、Red Team レビューの実施を促すリマインダー
 #
-# 呼び出し元: .claude/settings.local.json の UserPromptSubmit または PreToolUse
-# 想定トリガー:
-#   - L1 に該当する操作キーワードをユーザープロンプトで検出
-#   - マイグレーション系コマンド (supabase db push, alembic upgrade 等)
-#   - git push origin main 等のリモート反映
+# Claude Code 仕様 (公式):
+#   - 入力: stdin に JSON で渡される
+#     {
+#       "session_id": "...",
+#       "transcript_path": "...",
+#       "cwd": "...",
+#       "hook_event_name": "PreToolUse",
+#       "tool_name": "Bash" | "Edit" | "Write" | ...,
+#       "tool_input": { "command": "...", ... },
+#       "tool_use_id": "..."
+#     }
+#   - 出力: stdout に JSON (任意) + exit code
+#     - exit 0: 許可 (通常動作)
+#     - exit 2: ブロック (stderr に理由)
+#     - JSON 形式で permissionDecision を返すことも可能
 #
-# 動作:
-#   1. プロンプト内容を解析し、L1 該当操作を検知
-#   2. memory/PHASE_STATUS.md から現在 Phase を取得
-#   3. Red Team レビュー未実施なら警告を出力 (Claude に中止を促す)
-#   4. exit 0 (中止はしない、あくまで通知)
+# 本 hook は通知型: exit 0 で許可しつつ stderr に警告を出すのみ。
+# ブロックは誤検知リスクが高いため、あえて行わない。
 #
-# 注意:
-#   - 本 hook は通知のみで、ブロックはしない (誤検知防止)
-#   - 真の承認フローはプロジェクトオーナーの明示発話 (「OK」「承認」等)
-#   - hook はあくまで補助装置
+# 環境変数 (Claude Code が提供):
+#   - $CLAUDE_PROJECT_DIR: プロジェクトルート
+#   - $CLAUDE_PLUGIN_ROOT: プラグインディレクトリ (プラグイン hook の場合)
 #
 # 設定例 (.claude/settings.local.json):
 #   {
@@ -29,7 +35,11 @@
 #         {
 #           "matcher": "Bash",
 #           "hooks": [
-#             { "type": "command", "command": "${CLAUDE_PROJECT_DIR}/.claude/hooks/claude-code-review.sh" }
+#             {
+#               "type": "command",
+#               "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/claude-code-review.sh",
+#               "timeout": 5
+#             }
 #           ]
 #         }
 #       ]
@@ -37,55 +47,112 @@
 #   }
 # ============================================================================
 
-set -euo pipefail
+set -u  # undefined var はエラー、ただし pipefail は stdin 読み込みで問題になるので外す
 
-# Claude Code が提供する環境変数
-PROMPT="${CLAUDE_USER_PROMPT:-}"
-TOOL_NAME="${CLAUDE_TOOL_NAME:-}"
-TOOL_INPUT="${CLAUDE_TOOL_INPUT:-}"
 PROJECT_DIR="${CLAUDE_PROJECT_DIR:-$(pwd)}"
 
-# L1 該当キーワード (プロジェクトごとにカスタマイズ推奨)
+# ----------------------------------------------------------------------------
+# 1. stdin から JSON を読み込む
+# ----------------------------------------------------------------------------
+HOOK_INPUT=$(cat)
+
+# 空入力チェック (hook が手動実行されたとき等)
+if [ -z "$HOOK_INPUT" ]; then
+  # stdin 空 = 手動テスト。サイレントに終了
+  exit 0
+fi
+
+# ----------------------------------------------------------------------------
+# 2. JSON パース (jq があれば使う、なければ grep フォールバック)
+# ----------------------------------------------------------------------------
+TOOL_NAME=""
+TOOL_COMMAND=""
+TOOL_FILE_PATH=""
+
+if command -v jq >/dev/null 2>&1; then
+  # jq がある場合 (推奨パス)
+  TOOL_NAME=$(echo "$HOOK_INPUT" | jq -r '.tool_name // ""' 2>/dev/null)
+  TOOL_COMMAND=$(echo "$HOOK_INPUT" | jq -r '.tool_input.command // ""' 2>/dev/null)
+  TOOL_FILE_PATH=$(echo "$HOOK_INPUT" | jq -r '.tool_input.file_path // ""' 2>/dev/null)
+else
+  # jq が無い場合のフォールバック (grep で簡易パース)
+  TOOL_NAME=$(echo "$HOOK_INPUT" | grep -oE '"tool_name":"[^"]*"' | head -1 | sed 's/"tool_name":"\(.*\)"/\1/')
+  TOOL_COMMAND=$(echo "$HOOK_INPUT" | grep -oE '"command":"[^"]*"' | head -1 | sed 's/"command":"\(.*\)"/\1/')
+  TOOL_FILE_PATH=$(echo "$HOOK_INPUT" | grep -oE '"file_path":"[^"]*"' | head -1 | sed 's/"file_path":"\(.*\)"/\1/')
+fi
+
+# Bash ツール以外は基本的に対象外 (Write/Edit で L1 に該当するケースは稀)
+# ただしマイグレファイル作成は Write なので特別扱い
+if [ "$TOOL_NAME" != "Bash" ] && [ "$TOOL_NAME" != "Write" ] && [ "$TOOL_NAME" != "Edit" ]; then
+  exit 0
+fi
+
+# ----------------------------------------------------------------------------
+# 3. L1 該当キーワード検知
+# ----------------------------------------------------------------------------
+# プロジェクトごとにカスタマイズ推奨
 L1_KEYWORDS=(
+  # DB マイグレーション系
   "supabase db push"
+  "supabase migration up"
   "alembic upgrade"
   "prisma migrate deploy"
   "rails db:migrate"
+  "knex migrate:latest"
+  "typeorm migration:run"
+  # Git 破壊系
   "git push --force"
-  "git push origin main"
+  "git push -f"
+  "git push --force-with-lease"
+  "git reset --hard"
+  # SQL 破壊系
   "DROP TABLE"
   "DROP COLUMN"
+  "DROP SCHEMA"
+  "DROP DATABASE"
   "TRUNCATE"
+  "DELETE FROM"
+  # 本番系 (日本語)
   "本番適用"
   "本番反映"
   "マイグレ適用"
+  "マイグレーション適用"
+  # インフラ破壊系
+  "terraform destroy"
+  "kubectl delete namespace"
+  "aws s3 rm"
+  "rm -rf"
 )
 
-# 検知フラグ
+# Bash コマンド + Write/Edit のファイルパスの両方を検査対象に
+COMBINED_TEXT="$TOOL_COMMAND $TOOL_FILE_PATH"
+
 DETECTED_L1=false
 MATCHED_KEYWORD=""
 
-# プロンプトとツール入力の両方を検査
-COMBINED_INPUT="$PROMPT $TOOL_INPUT"
-
 for keyword in "${L1_KEYWORDS[@]}"; do
-  if echo "$COMBINED_INPUT" | grep -qF "$keyword"; then
+  if echo "$COMBINED_TEXT" | grep -qF -- "$keyword"; then
     DETECTED_L1=true
     MATCHED_KEYWORD="$keyword"
     break
   fi
 done
 
-# L1 検知時のみ警告出力
+# Write/Edit で新規マイグレファイルを作成するケース (特別判定)
+if [ "$TOOL_NAME" = "Write" ] && echo "$TOOL_FILE_PATH" | grep -qE "migrations/[0-9]+.*\.sql$"; then
+  DETECTED_L1=true
+  MATCHED_KEYWORD="新規マイグレファイル作成 ($TOOL_FILE_PATH)"
+fi
+
+# ----------------------------------------------------------------------------
+# 4. L1 検知時の警告出力 (stderr)
+# ----------------------------------------------------------------------------
 if [ "$DETECTED_L1" = "true" ]; then
-  # 直近の Red Team レビュー記録を確認
   RISK_REGISTER="$PROJECT_DIR/memory/RISK_REGISTER.md"
-  RECENT_REVIEW_MARKER="Red Team"
+  RECENT_REVIEW_COUNT="0"
 
   if [ -f "$RISK_REGISTER" ]; then
-    RECENT_REVIEW_COUNT=$(tail -200 "$RISK_REGISTER" 2>/dev/null | grep -c "$RECENT_REVIEW_MARKER" || echo "0")
-  else
-    RECENT_REVIEW_COUNT="0"
+    RECENT_REVIEW_COUNT=$(tail -200 "$RISK_REGISTER" 2>/dev/null | grep -c "Red Team" || echo "0")
   fi
 
   cat <<EOF >&2
@@ -94,6 +161,7 @@ if [ "$DETECTED_L1" = "true" ]; then
 ║  🔶 Claude Ops Framework: L1 操作検知                             ║
 ╠══════════════════════════════════════════════════════════════════╣
 ║                                                                    ║
+║  ツール: $TOOL_NAME
 ║  検知キーワード: $MATCHED_KEYWORD
 ║                                                                    ║
 ║  L1 操作前のチェックリスト:                                         ║
@@ -118,7 +186,19 @@ if [ "$DETECTED_L1" = "true" ]; then
 
 EOF
 
+  # Additional context を stdout に JSON で返す (Claude Code 向け)
+  # これにより Claude のコンテキストにチェックリスト情報が追加される
+  if command -v jq >/dev/null 2>&1; then
+    cat <<JSON
+{
+  "hookSpecificOutput": {
+    "hookEventName": "PreToolUse",
+    "additionalContext": "L1 操作検知: ${MATCHED_KEYWORD}。Red Team レビュー実施済みか、24h滞留満了か、プロジェクトオーナー承認済みかを確認してください。"
+  }
+}
+JSON
+  fi
 fi
 
-# 常に exit 0 (hook はブロックしない)
+# 常に exit 0 (通知のみ、ブロックしない)
 exit 0

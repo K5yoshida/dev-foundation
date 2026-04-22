@@ -91,7 +91,16 @@ grep -rn "###_TODO:" memory/ .claude/
 
 L1 操作を自動検知して Red Team レビューを促す hook を有効化:
 
-`.claude/settings.local.json` に以下を追加 (ファイルがなければ新規作成):
+**A. サンプルファイルをコピー (最速)**:
+
+```bash
+# init-cof.sh 実行後、.claude/settings.local.json.example が展開されているはず
+cp .claude/settings.local.json.example .claude/settings.local.json
+```
+
+**B. 既存の settings.local.json に手動追加**:
+
+既に `.claude/settings.local.json` がある場合、以下の `hooks` セクションを統合:
 
 ```json
 {
@@ -102,7 +111,28 @@ L1 操作を自動検知して Red Team レビューを促す hook を有効化:
         "hooks": [
           {
             "type": "command",
-            "command": "${CLAUDE_PROJECT_DIR}/.claude/hooks/claude-code-review.sh"
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/claude-code-review.sh",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "matcher": "Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/claude-code-review.sh",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "matcher": "Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/claude-code-review.sh",
+            "timeout": 5
           }
         ]
       }
@@ -111,9 +141,21 @@ L1 操作を自動検知して Red Team レビューを促す hook を有効化:
 }
 ```
 
-これで `supabase db push` や `git push --force` 等の L1 キーワードを含むコマンドを
-Claude が実行しようとした時、自動でチェックリストが表示されます (ブロックはしない、
-あくまで通知)。
+**重要な仕様**:
+- hook は stdin から JSON (`tool_name`, `tool_input` 等) を受け取る
+- 環境変数 `$CLAUDE_PROJECT_DIR` はプロジェクトルートを指す
+- `timeout: 5` で 5 秒以内に完了しない場合は自動スキップ
+- `jq` がインストールされていれば使う (Homebrew: `brew install jq`)、無ければ grep で簡易パース
+
+**動作確認**:
+
+```bash
+# L1 キーワードを含む入力で hook をテスト
+echo '{"tool_name":"Bash","tool_input":{"command":"supabase db push"}}' | \
+  bash .claude/hooks/claude-code-review.sh
+
+# 期待結果: stderr にチェックリスト表示、exit 0
+```
 
 **プロジェクト固有のキーワード追加**:
 `.claude/hooks/claude-code-review.sh` の `L1_KEYWORDS` 配列を編集し、プロジェクト

@@ -1,0 +1,40 @@
+{
+  "_comment": "Claude Ops Framework: L1 Detection Hook 設定サンプル",
+  "_usage": "このファイルを .claude/settings.local.json にリネームして有効化",
+  "_warning": "settings.local.json は git 管理外 (個人設定)、settings.json は git 管理 (チーム共通)",
+
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/claude-code-review.sh",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "matcher": "Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/claude-code-review.sh",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "matcher": "Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/claude-code-review.sh",
+            "timeout": 5
+          }
+        ]
+      }
+    ]
+  }
+}

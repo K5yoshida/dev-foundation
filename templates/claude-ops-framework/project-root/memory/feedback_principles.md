@@ -18,54 +18,54 @@ type: feedback
 ## 🥇 最上位原則: {{TOP_PRINCIPLE}}
 
 **Why (なぜ)**:
-- {{TOP_PRINCIPLE_REASON}}
+- ###_TODO: TOP_PRINCIPLE_REASON ###
 
 **How to apply (適用方法)**:
-- {{TOP_PRINCIPLE_APPLICATION}}
+- ###_TODO: TOP_PRINCIPLE_APPLICATION ###
 
 ---
 
 ## 🌟 順序原則: {{ORDER_PRINCIPLE}}
 
 **Why**:
-- {{ORDER_PRINCIPLE_REASON}}
+- ###_TODO: ORDER_PRINCIPLE_REASON ###
 
 **How to apply**:
 - **Phase 順序の基本原則**:
-  1. {{ORDER_PHASE_1}}
-  2. {{ORDER_PHASE_2}}
-  3. {{ORDER_PHASE_3}}
+  1. ###_TODO: ORDER_PHASE_1 ###
+  2. ###_TODO: ORDER_PHASE_2 ###
+  3. ###_TODO: ORDER_PHASE_3 ###
 - **この順序原則に反する実装は、たとえ個別に正しくても優先度を下げる**
 
 ---
 
-## 原則① {{PRINCIPLE_1_TITLE}}
+## 原則① ###_TODO: PRINCIPLE_1_TITLE ###
 
 **Why**:
-- {{PRINCIPLE_1_REASON}}
+- ###_TODO: PRINCIPLE_1_REASON ###
 
 **How to apply**:
-- {{PRINCIPLE_1_APPLICATION}}
+- ###_TODO: PRINCIPLE_1_APPLICATION ###
 
 ---
 
-## 原則② {{PRINCIPLE_2_TITLE}}
+## 原則② ###_TODO: PRINCIPLE_2_TITLE ###
 
 **Why**:
-- {{PRINCIPLE_2_REASON}}
+- ###_TODO: PRINCIPLE_2_REASON ###
 
 **How to apply**:
-- {{PRINCIPLE_2_APPLICATION}}
+- ###_TODO: PRINCIPLE_2_APPLICATION ###
 
 ---
 
-## 原則③ {{PRINCIPLE_3_TITLE}}
+## 原則③ ###_TODO: PRINCIPLE_3_TITLE ###
 
 **Why**:
-- {{PRINCIPLE_3_REASON}}
+- ###_TODO: PRINCIPLE_3_REASON ###
 
 **How to apply**:
-- {{PRINCIPLE_3_APPLICATION}}
+- ###_TODO: PRINCIPLE_3_APPLICATION ###
 
 ---
 
@@ -75,11 +75,11 @@ type: feedback
 
 以下は本プロジェクト (または類似プロジェクト) で犯した誤りと、そこから導かれたルール:
 
-1. **{{MISTAKE_1}}**
-   - 教訓: {{LESSON_1}}
+1. **###_TODO: MISTAKE_1 ###**
+   - 教訓: ###_TODO: LESSON_1 ###
 
-2. **{{MISTAKE_2}}**
-   - 教訓: {{LESSON_2}}
+2. **###_TODO: MISTAKE_2 ###**
+   - 教訓: ###_TODO: LESSON_2 ###
 
 ---
 
@@ -102,8 +102,8 @@ type: feedback
 
 プロジェクトオーナーの以下の発言の全てが、これらの原則から来ている:
 
-- 「{{QUOTE_1}}」
-- 「{{QUOTE_2}}」
-- 「{{QUOTE_3}}」
+- 「###_TODO: QUOTE_1 ###」
+- 「###_TODO: QUOTE_2 ###」
+- 「###_TODO: QUOTE_3 ###」
 
 これは**プロジェクトを守るための絶対ライン**であり、妥協できない。

@@ -10,15 +10,15 @@
 
 | 項目             | 値                                                                                             |
 | ---------------- | ---------------------------------------------------------------------------------------------- |
-| **起点**         | {{PROJECT_ORIGIN}}                                                                             |
-| **ゴール**       | {{PROJECT_GOAL}}                                                                               |
+| **起点**         | ###_TODO: PROJECT_ORIGIN ###                                                                             |
+| **ゴール**       | ###_TODO: PROJECT_GOAL ###                                                                               |
 | **正本**         | `memory/project-ops-master-plan.md`                                                            |
 | **現在Phase**    | **Phase 0 準備中**                                                                             |
 | **期限目安**     | {{DURATION}}                                                                                   |
-| **完璧の定義**   | {{DEFINITION_OF_DONE}}                                                                         |
-| **完了判定**     | 時間ではなく品質ゲート (Phase 完了 = Critical 0 件 + 盲検テスト {{BLIND_TEST_THRESHOLD}} + 業務受入) |
+| **完璧の定義**   | ###_TODO: DEFINITION_OF_DONE ###                                                                         |
+| **完了判定**     | 時間ではなく品質ゲート (Phase 完了 = Critical 0 件 + 盲検テスト ###_TODO: BLIND_TEST_THRESHOLD ### + 業務受入) |
 | **L1上限**       | 週 2 件                                                                                        |
-| **稼働目安**     | {{WORKING_HOURS}}                                                                              |
+| **稼働目安**     | ###_TODO: WORKING_HOURS ###                                                                              |
 
 ### 絶対原則 (違反時は即停止)
 
@@ -38,8 +38,8 @@
 
 以下は本プロジェクト完了まで触らない:
 
-- F-1: {{FROZEN_1}}
-- F-2: {{FROZEN_2}}
+- F-1: ###_TODO: FROZEN_1 ###
+- F-2: ###_TODO: FROZEN_2 ###
 
 ### 凍結例外マトリクス (判断ルール化済み)
 
@@ -53,10 +53,10 @@
 
 本プロジェクト期間中に並行で進める施策がある場合、以下に記入:
 
-### 1. {{ACTIVE_INITIATIVE_1}}
+### 1. ###_TODO: ACTIVE_INITIATIVE_1 ###
 
 | 項目          | 値                             |
 | ------------- | ------------------------------ |
-| **起点**      | {{INIT_1_ORIGIN}}              |
-| **ゴール**    | {{INIT_1_GOAL}}                |
-| **現在Phase** | {{INIT_1_PHASE}}               |
+| **起点**      | ###_TODO: INIT_1_ORIGIN ###              |
+| **ゴール**    | ###_TODO: INIT_1_GOAL ###                |
+| **現在Phase** | ###_TODO: INIT_1_PHASE ###               |

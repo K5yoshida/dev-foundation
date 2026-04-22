@@ -50,7 +50,7 @@ memory/handoff-YYYY-MM-DD.md の Part 2 §A を実行してください。
    (c) 凍結例外事象 (本番障害・セキュリティ・データ汚染拡大・コンプライアンス要請) が発生していないか確認
 
 4. 判定結果に応じて自動で分岐:
-   ■ 凍結例外事象が発生 → §C で Apex 中断、事象対応最優先
+   ■ 凍結例外事象が発生 → §C でプロジェクト作業中断、事象対応最優先
    ■ 通常作業日 → §A 実行: [本日の具体タスク]
 
 判定結果と、これから何をするかを最初に一言で報告してから着手すること。
@@ -83,20 +83,20 @@ memory/handoff-YYYY-MM-DD.md の Part 2 §C (凍結例外対応) を実行して
 
 ### 最上位目標
 
-> {{DEFINITION_OF_DONE}}
+> ###_TODO: DEFINITION_OF_DONE ###
 
 ### 過去事故 (全原則の源泉、あれば)
 
-> {{PAST_INCIDENT_DETAIL}}
+> ###_TODO: PAST_INCIDENT_DETAIL ###
 > 詳細: `memory/past-incident-*.md`
 
 ### N 大原則 + 順序原則 + 最上位原則
 
 | # | 原則 |
 |---|------|
-| ① | {{PRINCIPLE_1}} |
-| ② | {{PRINCIPLE_2}} |
-| ③ | {{PRINCIPLE_3}} |
+| ① | ###_TODO: PRINCIPLE_1 ### |
+| ② | ###_TODO: PRINCIPLE_2 ### |
+| ③ | ###_TODO: PRINCIPLE_3 ### |
 | 🌟 | **順序原則**: {{ORDER_PRINCIPLE}} |
 | 🥇 | **最上位**: {{TOP_PRINCIPLE}} |
 
@@ -123,7 +123,7 @@ Phase 5: 最終検証
 
 - **層1-Claude**: 敵対的サブエージェント 3 並列
 - **層1-Codex**: GPT-5 系 2 並列 (必須、quota 切れ時は Claude Red Team Round 3+ で代替)
-- **層2**: 盲検テスト {{BLIND_TEST_SIZE}} 件層別
+- **層2**: 盲検テスト ###_TODO: BLIND_TEST_SIZE ### 件層別
 - **層3**: 業務受入 (プロジェクトオーナー本人)
 - **Codex Stop hook**: 停止時自動レビュー、指摘は即対応
 
@@ -180,7 +180,7 @@ git status --short | head -5
 
 ## §B: 状況確認プレイブック (L4 READ ONLY のみ)
 
-吉田さんが「状況確認のみ」を要求した場合:
+{{PROJECT_OWNER}}が「状況確認のみ」を要求した場合:
 
 1. §0 (プロジェクト全体文脈) を復唱
 2. §1 (現在地点) を実データで再確認

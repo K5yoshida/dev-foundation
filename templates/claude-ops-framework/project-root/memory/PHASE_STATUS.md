@@ -14,12 +14,12 @@ type: project
 
 | Phase | 期間 | 状態 | 進捗 |
 |-------|------|------|------|
-| Phase 0: 準備 + 封じ込め | {{PHASE_0_DURATION}} | 🟡 進行中 | 0% |
-| Phase 1: {{PHASE_1_NAME}} | {{PHASE_1_DURATION}} | ⏳ 待機 | 0% |
-| Phase 2: {{PHASE_2_NAME}} | {{PHASE_2_DURATION}} | ⏳ 待機 | 0% |
-| Phase 3: {{PHASE_3_NAME}} | {{PHASE_3_DURATION}} | ⏳ 待機 | 0% |
-| Phase 4: {{PHASE_4_NAME}} | {{PHASE_4_DURATION}} | ⏳ 待機 | 0% |
-| Phase 5: 最終検証 | {{PHASE_5_DURATION}} | ⏳ 待機 | 0% |
+| Phase 0: 準備 + 封じ込め | ###_TODO: PHASE_0_DURATION ### | 🟡 進行中 | 0% |
+| Phase 1: ###_TODO: PHASE_1_NAME ### | ###_TODO: PHASE_1_DURATION ### | ⏳ 待機 | 0% |
+| Phase 2: ###_TODO: PHASE_2_NAME ### | ###_TODO: PHASE_2_DURATION ### | ⏳ 待機 | 0% |
+| Phase 3: ###_TODO: PHASE_3_NAME ### | ###_TODO: PHASE_3_DURATION ### | ⏳ 待機 | 0% |
+| Phase 4: ###_TODO: PHASE_4_NAME ### | ###_TODO: PHASE_4_DURATION ### | ⏳ 待機 | 0% |
+| Phase 5: 最終検証 | ###_TODO: PHASE_5_DURATION ### | ⏳ 待機 | 0% |
 
 ---
 
@@ -29,8 +29,8 @@ type: project
 
 | # | タスク | Lv | 状態 |
 |---|-------|-----|------|
-| 0-1 | {{PHASE_0_TASK_1}} | {{PHASE_0_TASK_1_LEVEL}} | 未着手 |
-| 0-2 | {{PHASE_0_TASK_2}} | {{PHASE_0_TASK_2_LEVEL}} | 未着手 |
+| 0-1 | ###_TODO: PHASE_0_TASK_1 ### | ###_TODO: PHASE_0_TASK_1_LEVEL ### | 未着手 |
+| 0-2 | ###_TODO: PHASE_0_TASK_2 ### | ###_TODO: PHASE_0_TASK_2_LEVEL ### | 未着手 |
 
 ### 適用前の必須手順 (全 L1 共通)
 1. プロジェクトオーナー個別事前承認
@@ -52,7 +52,7 @@ type: project
 
 ### {{START_DATE}}
 - プロジェクトキックオフ
-- {{KICKOFF_DETAILS}}
+- ###_TODO: KICKOFF_DETAILS ###
 
 ---
 

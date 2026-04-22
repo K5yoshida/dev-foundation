@@ -5,8 +5,8 @@ type: project
 ---
 # {{PROJECT_NAME}} マスタープラン v1.0
 
-**期間**: {{START_DATE}} 開始、終了予定 **{{END_DATE}}（{{DURATION}}目安）**
-**ステータス**: {{CURRENT_PHASE}}
+**期間**: {{START_DATE}} 開始、終了予定 **###_TODO: END_DATE ###（{{DURATION}}目安）**
+**ステータス**: ###_TODO: CURRENT_PHASE ###
 
 > このファイルは {{PROJECT_NAME}} の**唯一の正本**。他と矛盾した場合これが優先。
 
@@ -15,15 +15,15 @@ type: project
 ## 🔥 最上位原則
 
 1. **{{TOP_PRINCIPLE}}**
-2. **{{SECOND_PRINCIPLE}}**
-3. **{{THIRD_PRINCIPLE}}**
+2. **###_TODO: SECOND_PRINCIPLE ###**
+3. **###_TODO: THIRD_PRINCIPLE ###**
 4. **失敗は許されない**
 
 ---
 
 ## 完璧の定義
 
-> {{DEFINITION_OF_DONE}}
+> ###_TODO: DEFINITION_OF_DONE ###
 > 全体期限は柔軟、**成果物単位は期限あり、品質基準は事前固定**。
 
 ---
@@ -34,9 +34,9 @@ type: project
 
 | # | 原則 |
 |---|------|
-| ① | {{PRINCIPLE_1}} |
-| ② | {{PRINCIPLE_2}} |
-| ③ | {{PRINCIPLE_3}} |
+| ① | ###_TODO: PRINCIPLE_1 ### |
+| ② | ###_TODO: PRINCIPLE_2 ### |
+| ③ | ###_TODO: PRINCIPLE_3 ### |
 | 🌟 | **順序原則**: {{ORDER_PRINCIPLE}} |
 
 ---
@@ -66,7 +66,7 @@ type: project
 |---|--------|-----------|
 | 層1-Claude | 敵対的サブエージェント 3 並列 (Red Team / Fact Check / Incident Sim) | Phase完了時、L0/L1 操作前 |
 | 層1-Codex | GPT-5 系 異質モデル 2 並列 | 同上、必須 (quota 切れ時は Claude Red Team Round 3+ で代替) |
-| 層2: 盲検テスト | {{BLIND_TEST_SIZE}} 件層別 | L1/L2 本番書き込み前 |
+| 層2: 盲検テスト | ###_TODO: BLIND_TEST_SIZE ### 件層別 | L1/L2 本番書き込み前 |
 | 層3: 業務受入 | プロジェクトオーナー本人 | Phase 完了時 |
 | Review Gate | 停止前 Codex 自動 | 全停止時 |
 
@@ -79,24 +79,24 @@ type: project
 
 期間枠ではなく**成果物単位の期限**で管理。
 
-### Phase 0: 準備 + 封じ込め ({{PHASE_0_DURATION}})
+### Phase 0: 準備 + 封じ込め (###_TODO: PHASE_0_DURATION ###)
 
 成果物:
-- {{PHASE_0_DELIVERABLE_1}}
-- {{PHASE_0_DELIVERABLE_2}}
+- ###_TODO: PHASE_0_DELIVERABLE_1 ###
+- ###_TODO: PHASE_0_DELIVERABLE_2 ###
 
 完了基準:
 - 事前定義した成果物全達成
 - Claude 3並列 + Codex 2並列レビュー Critical 0件
 - プロジェクトオーナー業務受入
 
-### Phase 1: ... ({{PHASE_1_DURATION}})
+### Phase 1: ... (###_TODO: PHASE_1_DURATION ###)
 
-{{PHASE_1_DETAILS}}
+###_TODO: PHASE_1_DETAILS ###
 
-### Phase 2: ... ({{PHASE_2_DURATION}})
+### Phase 2: ... (###_TODO: PHASE_2_DURATION ###)
 
-{{PHASE_2_DETAILS}}
+###_TODO: PHASE_2_DETAILS ###
 
 ---
 
@@ -126,7 +126,7 @@ type: project
 5. プロジェクトオーナーの判断疲労による L1 雑承認 3 回以上
 6. Codex Critical 指摘を Claude が要約・無視・上書き
 7. Phase 完了時に Critical 残存
-8. 想定期間の大幅超過 ({{FAILURE_DURATION}} 超過)
+8. 想定期間の大幅超過 (###_TODO: FAILURE_DURATION ### 超過)
 
 ### Phase 完了「Critical 0件」運用ルール
 
@@ -142,8 +142,8 @@ type: project
 
 | # | 施策 | 凍結理由 |
 |---|------|--------|
-| F-1 | {{FROZEN_1}} | {{FROZEN_1_REASON}} |
-| F-2 | {{FROZEN_2}} | {{FROZEN_2_REASON}} |
+| F-1 | ###_TODO: FROZEN_1 ### | ###_TODO: FROZEN_1_REASON ### |
+| F-2 | ###_TODO: FROZEN_2 ### | ###_TODO: FROZEN_2_REASON ### |
 
 ---
 
@@ -179,7 +179,7 @@ type: project
 - [ ] 事前定義した期限・合格基準・非目標を全達成
 - [ ] 層1-Claude 3 並列レビュー Critical 0 件
 - [ ] 層1-Codex 2 並列レビュー Critical 0 件
-- [ ] 層2 盲検テスト (該当時) {{BLIND_TEST_THRESHOLD}} 以上
+- [ ] 層2 盲検テスト (該当時) ###_TODO: BLIND_TEST_THRESHOLD ### 以上
 - [ ] 層3 業務受入 (プロジェクトオーナー本人)
 - [ ] 日次自己レビュー Q&A 記録 (8 問)
 - [ ] **evidence bundle 添付** (再現SQL + 実測ログ + 外部仕様証跡 + 変更前後 diff)
@@ -203,16 +203,16 @@ type: project
 
 - `{{PROJECT_NAME}}`: プロジェクト名
 - `{{START_DATE}}`: 開始日 (YYYY-MM-DD)
-- `{{END_DATE}}`: 終了予定日
+- `###_TODO: END_DATE ###`: 終了予定日
 - `{{DURATION}}`: 期間目安 (例: 「12週間」)
-- `{{CURRENT_PHASE}}`: 現在の Phase (例: 「Phase 0 準備中」)
-- `{{TOP_PRINCIPLE}}`, `{{SECOND_PRINCIPLE}}`, `{{THIRD_PRINCIPLE}}`: 最上位 3 原則
-- `{{DEFINITION_OF_DONE}}`: 完璧の定義 (1 文)
-- `{{PRINCIPLE_1}}` 〜 `{{PRINCIPLE_3}}`: N 大原則の詳細
+- `###_TODO: CURRENT_PHASE ###`: 現在の Phase (例: 「Phase 0 準備中」)
+- `{{TOP_PRINCIPLE}}`, `###_TODO: SECOND_PRINCIPLE ###`, `###_TODO: THIRD_PRINCIPLE ###`: 最上位 3 原則
+- `###_TODO: DEFINITION_OF_DONE ###`: 完璧の定義 (1 文)
+- `###_TODO: PRINCIPLE_1 ###` 〜 `###_TODO: PRINCIPLE_3 ###`: N 大原則の詳細
 - `{{ORDER_PRINCIPLE}}`: 順序原則
-- `{{BLIND_TEST_SIZE}}`: 盲検テストサンプルサイズ (例: 500)
-- `{{BLIND_TEST_THRESHOLD}}`: 合格閾値 (例: 99%)
-- `{{PHASE_0_DURATION}}` 等: Phase ごとの期間目安
-- `{{PHASE_0_DELIVERABLE_1}}` 等: Phase ごとの成果物
-- `{{FAILURE_DURATION}}`: 失敗判定期間 (例: 「24週間」)
-- `{{FROZEN_1}}`, `{{FROZEN_1_REASON}}` 等: 凍結施策
+- `###_TODO: BLIND_TEST_SIZE ###`: 盲検テストサンプルサイズ (例: 500)
+- `###_TODO: BLIND_TEST_THRESHOLD ###`: 合格閾値 (例: 99%)
+- `###_TODO: PHASE_0_DURATION ###` 等: Phase ごとの期間目安
+- `###_TODO: PHASE_0_DELIVERABLE_1 ###` 等: Phase ごとの成果物
+- `###_TODO: FAILURE_DURATION ###`: 失敗判定期間 (例: 「24週間」)
+- `###_TODO: FROZEN_1 ###`, `###_TODO: FROZEN_1_REASON ###` 等: 凍結施策

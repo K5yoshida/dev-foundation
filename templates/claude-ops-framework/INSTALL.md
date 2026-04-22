@@ -46,12 +46,83 @@ memory/
 └── past-incident-*.md         # 過去事故記録 (入力があれば)
 ```
 
-### 導入後の初期化
+### 導入後の初期化 (手動記入必須のプレースホルダ)
 
-1. `memory/project-ops-master-plan.md` を開き、プレースホルダ `{{...}}` を実際の値に置換
-2. `memory/feedback_principles.md` を開き、原則の詳細を記入
-3. `memory/MEMORY.md` の冒頭ポインタを最新 handoff に更新 (初回は雛形のままで OK)
-4. `.claude/CLAUDE.md` に以下を追記:
+init-cof.sh は 8 個のプレースホルダ (`{{PROJECT_NAME}}`, `{{PROJECT_OWNER}}`, `{{PROJECT_PURPOSE}}`,
+`{{DURATION}}`, `{{START_DATE}}`, `{{TOP_PRINCIPLE}}`, `{{ORDER_PRINCIPLE}}`, `{{PAST_INCIDENT_SUMMARY}}`)
+のみ自動置換します。
+
+**残りの ~75 種類のプレースホルダは `###_TODO: XXX ###` マーカーで目立つ形で残ります。**
+以下の手順で手動記入してください:
+
+#### ステップ 1: TODO マーカーを全検索
+
+```bash
+# 展開されたファイル内の未置換プレースホルダを一覧表示
+grep -rn "###_TODO:" memory/ .claude/
+```
+
+マーカーが残っているファイルと行数が全てリストされます。初期導入時は ~75 件前後です。
+
+#### ステップ 2: ファイルごとに記入 (推奨順序)
+
+| # | ファイル | 記入内容 | 優先度 |
+|---|---|---|---|
+| 1 | `memory/feedback_principles.md` | 原則 1-3 の詳細、過去事故の詳細 | 🔴 必須 |
+| 2 | `memory/project-ops-master-plan.md` | Phase 構成、凍結施策、失敗定義 | 🔴 必須 |
+| 3 | `memory/PHASE_STATUS.md` | Phase 名、最初のタスク 2 件 | 🔴 必須 |
+| 4 | `memory/RISK_REGISTER.md` | 初期リスク、失敗パターン | 🟡 推奨 |
+| 5 | `memory/SESSION_START.md` | プロジェクト固有 fact-check コマンド | 🟡 推奨 |
+| 6 | `.claude/01_knowledge/INITIATIVE_STATUS.md` | プロジェクトの起点・ゴール | 🟡 推奨 |
+| 7 | `memory/handoff-YYYY-MM-DD-v1.md` | 次セッションのタスク | 🟢 初回スキップ可 |
+
+#### ステップ 3: 記入完了の確認
+
+```bash
+# TODO マーカーがゼロになったか確認
+grep -rn "###_TODO:" memory/ .claude/ | wc -l
+# 期待結果: 0
+
+# ゼロでない場合、未記入のプレースホルダ一覧を再表示
+grep -rn "###_TODO:" memory/ .claude/
+```
+
+#### ステップ 4: L1 検知 hook の有効化 (任意、推奨)
+
+L1 操作を自動検知して Red Team レビューを促す hook を有効化:
+
+`.claude/settings.local.json` に以下を追加 (ファイルがなければ新規作成):
+
+```json
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${CLAUDE_PROJECT_DIR}/.claude/hooks/claude-code-review.sh"
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+これで `supabase db push` や `git push --force` 等の L1 キーワードを含むコマンドを
+Claude が実行しようとした時、自動でチェックリストが表示されます (ブロックはしない、
+あくまで通知)。
+
+**プロジェクト固有のキーワード追加**:
+`.claude/hooks/claude-code-review.sh` の `L1_KEYWORDS` 配列を編集し、プロジェクト
+固有のコマンド・文言を追加してください。
+
+#### ステップ 5: CLAUDE.md への統合
+
+1. `memory/MEMORY.md` の冒頭ポインタを最新 handoff に更新 (初回は雛形のままで OK)
+2. `.claude/CLAUDE.md` に以下を追記:
    ```md
    ## セッション開始時の必須確認
 

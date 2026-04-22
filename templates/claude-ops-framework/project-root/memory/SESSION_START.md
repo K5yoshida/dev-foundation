@@ -49,8 +49,8 @@ git log --oneline -5
 ls supabase/migrations/ 2>/dev/null | sort -r | head -10 || echo "Not a Supabase project"
 
 # 本番実測 (プロジェクト固有のコマンド)
-# {{FACT_CHECK_COMMAND_1}}
-# {{FACT_CHECK_COMMAND_2}}
+# ###_TODO: FACT_CHECK_COMMAND_1 ###
+# ###_TODO: FACT_CHECK_COMMAND_2 ###
 ```
 
 **「はず」「おそらく」「通常は」は赤信号**。実測を差し込んでから判断する。
@@ -110,7 +110,7 @@ Phase 完了時・L0/L1 操作前・プラン作成後は以下**全て必須**:
 以下は本プロジェクト期間中、**絶対禁止**:
 
 - [ ] 既存資産 (コード・memory) を読まずに設計・実装
-- [ ] サンプル {{MIN_SAMPLE_SIZE}} 件未満で分布判断
+- [ ] サンプル ###_TODO: MIN_SAMPLE_SIZE ### 件未満で分布判断
 - [ ] 単一キー判定での本番書き込み
 - [ ] 「完璧」「OK」「問題なし」を裏取りなしに発言
 - [ ] ドキュメントの数値を実データ確認なしに引用
@@ -125,7 +125,7 @@ Phase 完了時・L0/L1 操作前・プラン作成後は以下**全て必須**:
 
 ## ステップ9: プロジェクト固有チェック
 
-{{PROJECT_SPECIFIC_CHECKS}}
+###_TODO: PROJECT_SPECIFIC_CHECKS ###
 
 ---
 

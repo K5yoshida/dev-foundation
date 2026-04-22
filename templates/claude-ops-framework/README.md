@@ -63,10 +63,10 @@ Round 1: 4 High + 4 Medium 出る想定
   ↓ 全反映
 Round 2: 2 High + 1 Medium
   ↓ 全反映
-Round 3〜N: Critical 0 + High 0 に収束
+Round 3: Critical 0 + High 0 に収束 (目安)
 ```
 
-6 ラウンド超える場合はスコープ縮小を検討。
+**リワーク上限 3 回まで**。4 回目以降はスコープ縮小を検討 (詳細: [docs/concepts/multi-layer-review.md](docs/concepts/multi-layer-review.md))。
 
 詳細: [docs/concepts/multi-layer-review.md](docs/concepts/multi-layer-review.md)
 

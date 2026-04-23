@@ -106,6 +106,18 @@ run_test "L1 Write: マイグレファイル作成" \
   '{"tool_name":"Write","tool_input":{"file_path":"supabase/migrations/20260422140000_test.sql","content":"..."}}' \
   "yes"
 
+run_test "L1 Edit: DROP TABLE in new_string (C2 Round 7 対処)" \
+  '{"tool_name":"Edit","tool_input":{"file_path":"src/app.ts","old_string":"a","new_string":"DROP TABLE users"}}' \
+  "yes"
+
+run_test "L1 Write: DROP TABLE in content (C2 Round 7 対処)" \
+  '{"tool_name":"Write","tool_input":{"file_path":"script.sh","content":"psql -c \"DROP TABLE users\""}}' \
+  "yes"
+
+run_test "L1 Edit: git push --force in new_string" \
+  '{"tool_name":"Edit","tool_input":{"file_path":"deploy.sh","old_string":"a","new_string":"git push --force origin main"}}' \
+  "yes"
+
 run_test "通常 Bash: git status" \
   '{"tool_name":"Bash","tool_input":{"command":"git status"}}' \
   "no"

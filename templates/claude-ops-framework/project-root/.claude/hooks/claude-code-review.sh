@@ -68,14 +68,22 @@ fi
 TOOL_NAME=""
 TOOL_COMMAND=""
 TOOL_FILE_PATH=""
+TOOL_CONTENT=""
+TOOL_NEW_STRING=""
 
 if command -v jq >/dev/null 2>&1; then
   # jq がある場合 (推奨パス)
   TOOL_NAME=$(echo "$HOOK_INPUT" | jq -r '.tool_name // ""' 2>/dev/null)
   TOOL_COMMAND=$(echo "$HOOK_INPUT" | jq -r '.tool_input.command // ""' 2>/dev/null)
   TOOL_FILE_PATH=$(echo "$HOOK_INPUT" | jq -r '.tool_input.file_path // ""' 2>/dev/null)
+  # Write の content と Edit の new_string も検査対象に (C2 Round 7 対処)
+  # これにより DROP TABLE 等の危険 SQL を Edit/Write で書く瞬間も検知できる
+  TOOL_CONTENT=$(echo "$HOOK_INPUT" | jq -r '.tool_input.content // ""' 2>/dev/null)
+  TOOL_NEW_STRING=$(echo "$HOOK_INPUT" | jq -r '.tool_input.new_string // ""' 2>/dev/null)
 else
   # jq が無い場合のフォールバック (grep で簡易パース)
+  # 注: jq 推奨、grep フォールバックは最小機能 (command/file_path のみ、content/new_string は未対応)
+  echo "⚠️  COF hook: jq 未インストール、L1 検知が限定的 (brew install jq 推奨)" >&2
   TOOL_NAME=$(echo "$HOOK_INPUT" | grep -oE '"tool_name":"[^"]*"' | head -1 | sed 's/"tool_name":"\(.*\)"/\1/')
   TOOL_COMMAND=$(echo "$HOOK_INPUT" | grep -oE '"command":"[^"]*"' | head -1 | sed 's/"command":"\(.*\)"/\1/')
   TOOL_FILE_PATH=$(echo "$HOOK_INPUT" | grep -oE '"file_path":"[^"]*"' | head -1 | sed 's/"file_path":"\(.*\)"/\1/')
@@ -124,8 +132,9 @@ L1_KEYWORDS=(
   "rm -rf"
 )
 
-# Bash コマンド + Write/Edit のファイルパスの両方を検査対象に
-COMBINED_TEXT="$TOOL_COMMAND $TOOL_FILE_PATH"
+# Bash コマンド + Write/Edit のファイルパス + content/new_string を検査対象に
+# content/new_string を含めることで、Edit で DROP TABLE 等を書く瞬間も検知できる (C2 Round 7 対処)
+COMBINED_TEXT="$TOOL_COMMAND $TOOL_FILE_PATH $TOOL_CONTENT $TOOL_NEW_STRING"
 
 DETECTED_L1=false
 MATCHED_KEYWORD=""

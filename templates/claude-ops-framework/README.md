@@ -135,7 +135,9 @@ bash ~/Desktop/dev-foundation/templates/claude-ops-framework/scripts/init-cof.sh
 
 ## 実績
 
-- **MEDICA SOERUTE** (Project Apex、2026-04〜): 18-24週間の長期データ基盤改善プロジェクトで本フレームワークを運用中。Day 0A 封じ込めで 7 コミット/日、6 ラウンド Red Team レビュー、Codex Stop hook 2 回対処を完走。
+- **MEDICA SOERUTE** (Project Apex、2026-04〜): 18-24週間の長期データ基盤改善プロジェクトの運用知見から本フレームワークを抽出。Day 0A 封じ込めで 7 コミット/日、Red Team 多層レビュー、Codex Stop hook 対処を完走した経験ベース。L1 検知 hook は 2026-04-23 より dogfooding 開始。
+- **他 9 プロジェクト**: 2026-04-22 に横展開導入 (MedicaStory / JobVoice / praxia / reclove / NajimAI / leopalace-rpo / japango / medicademy / litmus)。各プロジェクトで最上位原則を固有に確定。
+- **注**: 本フレームワークは現状 n=10 プロジェクトの運用実績。OSS 公開水準までは dogfooding 期間を要する。
 
 ---
 

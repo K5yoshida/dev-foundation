@@ -1,0 +1,45 @@
+# dev-foundation
+
+AI駆動開発のための基盤テンプレート (constitution + agents + specs + hooks)
+
+## 5 軸 owner（CLAUDE.md §14-2）
+
+| 軸 | owner |
+|----|-------|
+| legal_owner | abstconc |
+| billing_owner | abstconc |
+| repo_owner | abstconc |
+| data_owner | abstconc |
+| credential_owner | abstconc |
+
+詳細: `_meta/team-assignment.md`
+
+## 主要技術スタック
+
+- (要記入)
+- (要記入)
+- (要記入)
+- (要記入)
+
+## リポジトリ
+
+- GitHub: (未作成)
+- 作成日: 2026-05-11
+
+## 開発フロー
+
+吉田敬悟さま標準フロー (`~/.claude/CLAUDE.md` §6 準拠):
+
+1. 設計書 (`.claude/01_docs/`) を確認
+2. 仕様 3 点セット (`.claude/02_specs/{nnn-feature}/`) で spec / plan / tasks 整備
+3. 実装 → テスト → ビルド確認
+4. IMPLEMENTATION_STATUS.md を `[x]` に更新（必要に応じ作成）
+5. コミット: `<type>(<module>): <summary>` 規約
+
+## 関連ドキュメント
+
+- PJ 規約: `.claude/CLAUDE.md`
+- 不変原則: `.claude/constitution.md`
+- 進行中タスク: `_meta/current-context.md`
+- L1 滞留プロトコル: `~/.claude/CLAUDE.md` §20
+- Ask 必須 27 項目: `~/.claude/CLAUDE.md` §15

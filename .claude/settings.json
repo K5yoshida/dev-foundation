@@ -1,0 +1,13 @@
+{
+  "_comment": "PJ 固有の Claude Code settings。グローバル ~/.claude/settings.json を継承し、本 PJ 固有の hooks / permissions / model 設定を追記する。空オブジェクトの場合はグローバル設定のみ適用。",
+  "_project_name": "dev-foundation",
+  "_created_date": "2026-05-11",
+  "permissions": {
+    "_comment": "本 PJ 固有の追加 permissions。例: 'Bash(npm run *)' 'Read(./.env)' 等",
+    "allow": [],
+    "deny": []
+  },
+  "hooks": {
+    "_comment": "本 PJ 固有の hooks。Phase 4 まで Stop hook 新設禁止 (~/.claude/CLAUDE.md §16 / precious-mixing-cook v05.md §3-12)。"
+  }
+}

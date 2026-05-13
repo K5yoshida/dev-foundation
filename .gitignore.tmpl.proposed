@@ -1,0 +1,70 @@
+# dev-foundation — .gitignore
+
+# === 環境変数・秘密 ===
+.env
+.env.local
+.env.*.local
+.env.development
+.env.production
+*.pem
+*.key
+
+# === macOS / OS ===
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# === エディタ・IDE ===
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# === 依存関係 ===
+node_modules/
+.pnp
+.pnp.js
+__pycache__/
+*.py[cod]
+.Python
+.venv/
+venv/
+env/
+.uv/
+
+# === ビルド成果物 ===
+.next/
+.nuxt/
+out/
+build/
+dist/
+*.egg-info/
+
+# === ログ・キャッシュ ===
+*.log
+logs/
+.cache/
+.parcel-cache/
+.turbo/
+
+# === テスト ===
+coverage/
+.nyc_output/
+.pytest_cache/
+
+# === ローカル一時 ===
+*.bak
+*.tmp
+.DS_Store
+.netrf
+
+# === precious-mixing-cook 慣例 ===
+# Claude Code 生成物 (コミット対象外)
+generated/
+_reports/
+.claude/codex-reviews/*.md
+!.claude/codex-reviews/.gitkeep
+
+# === Snapshot (init-project が記録、コミット対象) ===
+# !_meta/snapshot-pre-template.txt

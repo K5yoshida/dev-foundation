@@ -1,7 +1,7 @@
 # P0スペック作成
 
 > Input: P0番号（例: "001"）または対応するdocs番号（例: "32"）
-> Output: `specs/{number}-{name}/spec.md`, `plan.md`, `tasks.md`
+> Output: `.claude/02_specs/{feature-name}/spec.md`, `plan.md`, `tasks.md`
 > 所要時間: 1〜2時間
 > モード: プランモード必須
 
@@ -32,24 +32,24 @@
 
 ### Step 1: 設計書を読む
 
-`docs/INDEX.md` の Reading Path B に従い、以下の順で読む:
+`.claude/01_docs/INDEX.md` の Reading Path B に従い、以下の順で読む:
 
-1. `docs/29_ゼロベース再設計戦略.md` — 完了の定義
-2. `docs/30_設計漏れ是正と実装規律.md` — 10軸バリデーション
-3. `docs/31_実装着手前チェックリスト.md` — Go/No-Goゲート
-4. `docs/44_最高意思決定基準書.md` — 7ゲートバリデーション
-5. 該当P0のチェックシート（`docs/32〜47`）
+1. `.claude/01_docs/29_ゼロベース再設計戦略.md` — 完了の定義
+2. `.claude/01_.claude/01_docs/30_設計漏れ是正と実装規律.md` — 10軸バリデーション
+3. `.claude/01_docs/31_実装着手前チェックリスト.md` — Go/No-Goゲート
+4. `.claude/01_.claude/01_docs/44_最高意思決定基準書.md` — 7ゲートバリデーション
+5. 該当P0のチェックシート（`.claude/01_docs/32〜47`）
 
 ### Step 2: 既存コードを調査
 
 - 該当機能に関連する既存ファイルを `grep` / `glob` で探す
-- `docs/12_DB一覧.md` + `supabase/migrations/` でDBスキーマを把握
-- `docs/13_APIエンドポイント一覧.md` + `app/api/` でAPIを把握
-- `docs/09_画面一覧.md` + `app/(dashboard)/` で画面を把握
+- `.claude/01_.claude/01_.claude/01_docs/12_DB一覧.md` + `supabase/migrations/` でDBスキーマを把握
+- `.claude/01_.claude/01_.claude/01_docs/13_APIエンドポイント一覧.md` + `app/api/` でAPIを把握
+- `.claude/01_.claude/01_.claude/01_docs/09_画面一覧.md` + `app/(dashboard)/` で画面を把握
 
 ### Step 3: spec.md を作成
 
-`specs/README.md` の spec.md テンプレートに沿って作成する。
+`.claude/02_specs/README.md` の spec.md テンプレートに沿って作成する。
 
 必須セクション:
 
@@ -61,14 +61,14 @@
 - API Changes（新規/変更エンドポイント）
 - UI/UX Requirements（画面ごとの要件）
 - Test Design テーブル（Scenario / Type / Input / Expected Output）
-- 10-Axis Validation（docs/30 の10軸チェック）
-- 7-Gate Validation（docs/44 の7ゲートチェック）
+- 10-Axis Validation（.claude/01_docs/30 の10軸チェック）
+- 7-Gate Validation（.claude/01_docs/44 の7ゲートチェック）
 - Business Impact Hypothesis（WHO × WHAT への接続仮説 + 計測方法）
 - Ship & Learn Plan（リリース後48時間以内に確認する指標3つ）
 
 ### Step 4: plan.md を作成
 
-`specs/README.md` の plan.md テンプレートに沿って作成する。
+`.claude/02_specs/README.md` の plan.md テンプレートに沿って作成する。
 
 必須セクション:
 
@@ -79,7 +79,7 @@
 
 ### Step 5: tasks.md を作成
 
-`specs/README.md` の tasks.md テンプレートに沿って作成する。
+`.claude/02_specs/README.md` の tasks.md テンプレートに沿って作成する。
 
 - Phase 0: Test Skeleton（テスト骨格）
 - Phase 1: Data Layer（DB + 型定義）
@@ -90,7 +90,7 @@
 
 ### Step 6: 最終チェック
 
-- `memory/constitution.md` の10条に違反していないか
+- `.claude/constitution.md` の10条に違反していないか
 - `[NEEDS CLARIFICATION]` が残っていないか（残す場合は理由を明記）
 - Acceptance Criteria が全て検証可能か（曖昧な形容詞がないか）
 
@@ -102,9 +102,9 @@
 
 ## 完了条件
 
-- [ ] `specs/{number}-{name}/spec.md` 作成済み
-- [ ] `specs/{number}-{name}/plan.md` 作成済み
-- [ ] `specs/{number}-{name}/tasks.md` 作成済み
+- [ ] `.claude/02_specs/{feature-name}/spec.md` 作成済み
+- [ ] `.claude/02_specs/{feature-name}/plan.md` 作成済み
+- [ ] `.claude/02_specs/{feature-name}/tasks.md` 作成済み
 - [ ] 10-Axis Validation 全チェック済み
 - [ ] 7-Gate Validation 全チェック済み
 - [ ] `[NEEDS CLARIFICATION]` が空、または理由付きで残っている

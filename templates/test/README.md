@@ -1,6 +1,6 @@
-# Test Foundation — API契約テスト基盤
+# Test Foundation — テスト基盤
 
-「ビルドは通るけど機能が壊れている」を防ぐテスト基盤。
+「ビルドは通るけど機能が壊れている」を防ぐAPI契約テスト + 「使いにくい」を発見するAI探索的打鍵テスト。
 
 ## 構成
 
@@ -12,8 +12,20 @@ test/
 │   └── contracts/
 │       └── api-param-contract.test.ts ← テスト本体（テンプレート）
 ├── e2e/
-│   └── helpers/
-│       └── api-flow-helpers.ts       ← Playwright APIキャプチャ＆検証ヘルパー
+│   ├── helpers/
+│   │   └── api-flow-helpers.ts       ← Playwright APIキャプチャ＆検証ヘルパー
+│   └── exploratory/                  ← AI Vision × ペルソナ探索的打鍵テスト
+│       ├── playwright.config.ts      ← Playwright設定（ペルソナ別プロジェクト）
+│       ├── global-setup.ts           ← 全ペルソナのログインセッション準備
+│       ├── lib/
+│       │   ├── types.ts              ← 型定義（Persona, Scenario, FlowStep等）
+│       │   ├── auth.ts               ← 認証ヘルパー（要カスタマイズ）
+│       │   ├── scenario-runner.ts    ← シナリオ実行エンジン
+│       │   ├── explorer.ts           ← AI駆動ページ探索
+│       │   ├── vision.ts             ← スクリーンショットAI分析
+│       │   └── reporter.ts           ← 問題検出レポート生成
+│       └── scenarios/
+│           └── new-user.spec.ts      ← サンプルシナリオ（テンプレート）
 └── README.md
 ```
 
@@ -101,9 +113,39 @@ api-param-contract:
 | ボタン押下時にAPIが呼ばれない | assertApiParams (E2E) |
 | APIのURL自体が間違っている | 既存のapi-route-contract.test.ts |
 
+## 4. AI探索的打鍵テスト
+
+**何をするか**: AIの「目」（Vision API）でスクリーンショットを見て、ペルソナごとに「初見で迷わないか」「エラーが放置されていないか」を自動評価する。
+
+```bash
+# テンプレートをコピー
+cp -r e2e/exploratory/ <your-project>/e2e/
+```
+
+カスタマイズが必要なファイル:
+1. `lib/auth.ts` — ペルソナ定義 + ログイン処理をプロジェクトに合わせる
+2. `playwright.config.ts` — ベースURL + ペルソナ別プロジェクト定義
+3. `scenarios/*.spec.ts` — プロジェクトの業務フローに合わせたシナリオ
+
+package.json にスクリプト追加:
+```json
+"e2e:exploratory": "playwright test --config=e2e/playwright.config.ts"
+```
+
+詳細なセットアップ手順は `agent/prompts/04-quality/quality-exploratory.md` を参照。
+
+### 3つのテストの使い分け
+
+| テスト | 目的 | 実行タイミング |
+|--------|------|---------------|
+| API契約テスト (Vitest) | パラメータ整合性 | CI（毎コミット） |
+| API操作フローテスト (Playwright) | 操作→API呼び出し検証 | CI（毎コミット） |
+| 探索的打鍵テスト (Playwright + AI) | UX品質・認知負荷 | 週次 or リリース前 |
+
 ## 前提条件
 
 - Next.js App Router (route.ts)
 - Vitest
 - Playwright (E2E用)
 - Zod（使っていなくてもdestructuring / searchParams.getで検出可能）
+- OpenAI API Key（探索的打鍵テストのVision分析用。なくても基本テストは動く）

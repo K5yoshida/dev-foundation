@@ -19,7 +19,7 @@
 
 ## 実装前チェック
 
-1. `docs/26_バナーウィジェット仕様書.md` を読む
+1. `.claude/01_.claude/01_docs/26_バナーウィジェット仕様書.md` を読む
 2. `shared/widget-contracts.ts` で型定義を確認
 3. `widget/src/` の既存コードを読む（特に `index.ts`, `renderer.ts`, `styles.ts`）
 4. 変更が `shared/widget-contracts.ts` に影響するか確認

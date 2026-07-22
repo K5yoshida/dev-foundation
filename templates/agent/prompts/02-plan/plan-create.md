@@ -1,6 +1,6 @@
 # スペック→プラン変換
 
-> Input: 承認済みの `specs/{number}-{name}/spec.md`
+> Input: 承認済みの `.claude/02_specs/{feature-name}/spec.md`
 > Output: `plan.md` + `tasks.md` の更新・詳細化
 > 所要時間: 30分〜1時間
 > 用途: spec-create で3ファイル一括作成した後、人間がspec.mdをレビュー・承認した後にplan/tasksを精密化する場合に使用

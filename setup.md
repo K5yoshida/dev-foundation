@@ -22,13 +22,19 @@ Before running, ensure the project has:
 These files are project-agnostic. Copy them exactly as-is.
 
 ```
-scaffold/templates/constitution.md    → memory/constitution.md
-scaffold/templates/specs-readme.md    → specs/README.md
-scaffold/templates/lessons.md         → tasks/lessons.md
-scaffold/templates/check-code-quality.sh → .claude/hooks/check-code-quality.sh
-scaffold/templates/stop-reminder.sh   → .claude/hooks/stop-reminder.sh
-scaffold/templates/commitlint.config.js → commitlint.config.js
-scaffold/templates/.claudeignore      → .claudeignore
+scaffold/templates/.claude/constitution.md          → .claude/constitution.md
+scaffold/templates/CLAUDE.md                        → CLAUDE.md
+scaffold/templates/.claude/AGENTS.md                → .claude/AGENTS.md
+scaffold/templates/.claude/CLAUDE.md                → .claude/CLAUDE.md
+scaffold/templates/.claude/rules/WORKFLOW_RULES.md   → .claude/rules/WORKFLOW_RULES.md
+scaffold/templates/.claude/rules/DESIGN_SYSTEM.md    → .claude/rules/DESIGN_SYSTEM.md
+scaffold/templates/.claude/02_specs/README.md        → .claude/02_specs/README.md
+scaffold/templates/.claude/02_specs/DEPRECATION_GUIDE.md → .claude/02_specs/DEPRECATION_GUIDE.md
+scaffold/templates/tasks/lessons.md                  → tasks/lessons.md
+scaffold/templates/.claude/hooks/check-code-quality.sh → .claude/hooks/check-code-quality.sh
+scaffold/templates/.claude/hooks/stop-reminder.sh    → .claude/hooks/stop-reminder.sh
+scaffold/templates/commitlint.config.js              → commitlint.config.js
+scaffold/templates/.claudeignore                     → .claudeignore
 ```
 
 After copying, make hook scripts executable:
@@ -80,6 +86,22 @@ The file MUST contain these sections (adapt content to the actual project):
 
 > Cross-agent instructions for all AI coding assistants
 
+## Global Runtime Alignment
+
+This project inherits Yoshida's global AI-agent rules:
+
+1. `/Users/keigoyoshida/AGENTS.md`
+2. `/Users/keigoyoshida/CLAUDE.md`
+3. `/Users/keigoyoshida/.claude/CLAUDE.md`
+
+When these files and this project file conflict, follow this order:
+
+1. Direct user request
+2. The closest project-specific `AGENTS.md` / `CLAUDE.md`
+3. `/Users/keigoyoshida/AGENTS.md`
+4. `/Users/keigoyoshida/.claude/CLAUDE.md`
+5. General best practices
+
 ## Commands
 
 (List ALL scripts from package.json, plus common manual commands like npx supabase, etc.)
@@ -94,10 +116,11 @@ The file MUST contain these sections (adapt content to the actual project):
 
 ## Before You Implement
 
-1. Read `docs/INDEX.md` (if exists) or relevant docs
-2. Check progress tracker for current priorities
-3. If the feature has a spec, read `specs/{number}-{name}/`
-4. Review immutable principles: `memory/constitution.md`
+1. Read `/Users/keigoyoshida/AGENTS.md` and the nearest project `CLAUDE.md` / `.claude/CLAUDE.md`
+2. Read `docs/INDEX.md` or `.claude/01_docs/00_INDEX.md` if either exists
+3. Check progress tracker for current priorities
+4. If the feature has a spec, read `specs/{number}-{name}/` or `.claude/02_specs/{feature}/`
+5. Review immutable principles: `.claude/constitution.md`
 
 ## Coding Conventions
 
@@ -129,7 +152,7 @@ This project supports parallel development with multiple AI agents:
 2. **Plans** in `specs/{N}-{name}/plan.md` define HOW to build it
 3. **Tasks** in `specs/{N}-{name}/tasks.md` list work units with `[P]` markers
 4. Agents pick up `[P]` tasks independently; non-`[P]` tasks run sequentially
-5. All agents share `memory/constitution.md` as immutable principles
+5. All agents share `.claude/constitution.md` as immutable principles
 
 ### Agent Roles
 
@@ -150,12 +173,45 @@ This project supports parallel development with multiple AI agents:
 
 ## What NOT to Do
 
-(Extract from existing CLAUDE.md or define new rules)
+- Do not guess PR workflow, deploy path, DB behavior, billing impact, or external-send policy.
+- Do not display secrets, API keys, tokens, cookies, `.env` values, or PII.
+- Do not run destructive operations, production-impacting actions, DB changes, external sends, commits, pushes, or deploys without confirmation.
+- Do not edit files you have not read.
 ```
 
 ---
 
-## Step 4: Configure Claude Code hooks
+## Step 4: Create root CLAUDE.md bridge
+
+Root `CLAUDE.md` is a bridge for Claude Code. The detailed project-specific rules live at `.claude/CLAUDE.md`.
+
+If root `CLAUDE.md` does not exist, copy `scaffold/templates/CLAUDE.md` to `CLAUDE.md` and adjust the project name if needed.
+
+If root `CLAUDE.md` already contains detailed project rules, move those detailed rules into `.claude/CLAUDE.md`, then replace root `CLAUDE.md` with a thin bridge:
+
+```markdown
+# Claude Code Entry
+
+このプロジェクトの Claude Code 入口です。Codex と共通の入口は `AGENTS.md`、プロジェクト固有の詳細正本は `.claude/CLAUDE.md` です。
+
+## 必読
+
+1. `/Users/keigoyoshida/CLAUDE.md`
+2. `/Users/keigoyoshida/AGENTS.md`
+3. `./AGENTS.md`
+4. `./.claude/CLAUDE.md`
+
+## 重要ルール
+
+- 詳細ルールは `.claude/CLAUDE.md` に集約してください。
+- Codex と引き継ぐ作業文脈は、秘密情報とPIIを除外して `/Users/keigoyoshida/Desktop/_core/_org-knowledge/03_claude-handoff/ai-handoff/` に要約してください。
+```
+
+Also ensure `.claude/AGENTS.md` exists by copying `scaffold/templates/.claude/AGENTS.md`.
+
+---
+
+## Step 5: Configure Claude Code hooks
 
 Update `.claude/settings.json` to include hooks:
 
@@ -196,7 +252,7 @@ If `.claude/settings.json` already has content, MERGE the `hooks` section into t
 
 ---
 
-## Step 5: Install Husky + lint-staged + commitlint
+## Step 6: Install Husky + lint-staged + commitlint
 
 Run:
 
@@ -234,50 +290,167 @@ Verify `"prepare": "husky"` exists in `package.json` scripts (husky init adds it
 
 ---
 
-## Step 6: Generate docs/INDEX.md (if docs/ exists)
+## Step 7: Set up document hierarchy (.claude/01_docs, 02_specs, 03_plans)
 
-If the project has a `docs/` folder with design documents, generate `docs/INDEX.md`:
+All project documentation lives under `.claude/` in numbered folders:
 
-1. List all `.md` files in `docs/`
-2. Categorize them into layers:
-   - Strategy & Context — "Why this product?"
-   - Product Requirements — "What to build?"
-   - Technical Design — "How to build it?"
-   - Operations & Quality — "How to maintain it?"
-   - Top-Level Standards — "Read BEFORE any work"
+```
+.claude/
+├── 01_docs/     # 設計書 — WHY + 全体WHAT（プロジェクト開始時に書き切る）
+├── 02_specs/    # 仕様書 — 個別機能のWHAT + HOW + UI/UX（実装直前にJust-in-Time作成）
+├── 03_plans/    # 作業計画 — symlink to ~/.claude/plans（プランモード自動管理）
+└── PLANS.md     # プロジェクト別プラン一覧
+```
+
+### 7a. Move existing docs/ into .claude/01_docs/
+
+If the project has a `docs/` folder:
+
+```bash
+git mv docs .claude/01_docs
+```
+
+Then update all `docs/` path references in `.claude/CLAUDE.md`, source code comments, etc. to `.claude/01_docs/`.
+
+If no `docs/` folder exists, create `.claude/01_docs/` and generate an INDEX.md:
+
+1. List all `.md` files in `.claude/01_docs/`
+2. Categorize into layers: Strategy, Product, Technical, Operations
 3. Create reading paths (3-5 paths for common scenarios)
-4. Note the relationships: docs/ = design, specs/ = blueprints, tasks/ = sprint items
 
-If no `docs/` folder exists, skip this step.
+### 7b. Move existing specs/ into .claude/02_specs/
 
----
+If the project has a `specs/` folder at root or under `docs/specs/`:
 
-## Step 7: Update .claude/CLAUDE.md references
+```bash
+git mv specs .claude/02_specs        # or: git mv docs/specs .claude/02_specs
+```
 
-If `.claude/CLAUDE.md` exists, add these references to any "quick reference" or "files" section:
+The `README.md` template (copied in Step 1) defines the 3-point spec workflow.
+
+### 7c. Create plans folder with PLANS.md + files symlink
+
+```bash
+mkdir -p .claude/03_plans
+ln -s ~/.claude/plans .claude/03_plans/files
+```
+
+Create `.claude/03_plans/PLANS.md` to track project-specific plans:
 
 ```markdown
-| All-agent instructions | `AGENTS.md` (project root) |
-| Immutable principles | `memory/constitution.md` |
-| Feature spec workflow | `specs/README.md` |
-| Current tasks | `tasks/todo.md` |
-| Mistakes & learnings | `tasks/lessons.md` |
+# {PROJECT NAME} プラン一覧
+
+## 進行中
+
+| ステータス | ファイル | 内容 |
+|:---------:|---------|------|
+
+## 完了
+
+| ステータス | ファイル | 内容 | 完了日 |
+|:---------:|---------|------|--------|
+
+## 未着手
+
+| ステータス | ファイル | 内容 |
+|:---------:|---------|------|
+```
+
+This gives a clean editor sidebar view:
+
+```
+03_plans/
+├── PLANS.md    ← Project plan index (top of folder)
+└── files/      ← Expand to see actual plan files
+```
+
+### 7d. Update .gitignore
+
+Add to `.gitignore`:
+
+```
+# Claude Code plans (files/ is symlink to ~/.claude/plans)
+.claude/03_plans/files/
 ```
 
 ---
 
-## Step 8: Verify
+## Step 8: Create or update .claude/CLAUDE.md (REQUIRED)
+
+> **Standard placement**: project-specific CLAUDE.md MUST live at `.claude/CLAUDE.md`, NOT at project root. This separates it from the global `~/.claude/CLAUDE.md` and keeps Claude Code's lookup unambiguous.
+
+### 8a. If `.claude/CLAUDE.md` does NOT exist — create it
+
+Copy `scaffold/templates/.claude/CLAUDE.md` to `.claude/CLAUDE.md`, then fill project-specific fields. The generated file must preserve the global runtime references:
+
+```markdown
+# {PROJECT NAME} — Claude Code Project Instructions
+
+> Project-specific rules. The global `/Users/keigoyoshida/AGENTS.md`, `/Users/keigoyoshida/CLAUDE.md`, and `~/.claude/CLAUDE.md` handle personal style, safety, and cross-agent runtime alignment.
+
+## 必読
+
+1. `/Users/keigoyoshida/AGENTS.md`
+2. `/Users/keigoyoshida/CLAUDE.md`
+3. `/Users/keigoyoshida/.claude/CLAUDE.md`
+4. `../AGENTS.md`
+
+## プロジェクト概要
+
+(1-3 lines: what this product is, who uses it, current phase)
+
+## 技術スタック
+
+(Framework / database / hosting / testing — one line each, link to AGENTS.md for full list)
+
+## 開発ワークフロー（docs → specs → plans → 実装）
+
+| 種類 | 役割 | 作成タイミング | 置き場 |
+|------|------|---------------|--------|
+| **docs（設計書）** | WHY + 全体WHAT | プロジェクト開始時に1回書き切る | `.claude/01_docs/` |
+| **specs（仕様書）** | 個別機能のWHAT + HOW + UI/UX | その機能を実装する直前 | `.claude/02_specs/<feature>/` |
+| **plans（作業計画）** | 実装の手順書 | 3ステップ以上のタスクでプランモード使用 | `.claude/03_plans/` |
+
+## クイックリファレンス
+
+| All-agent instructions | `AGENTS.md` (project root) |
+| Immutable principles | `.claude/constitution.md` |
+| 設計書ナビゲーター | `.claude/01_docs/00_INDEX.md` |
+| Feature spec workflow | `.claude/02_specs/README.md` |
+| プラン一覧 | `.claude/03_plans/PLANS.md` |
+| Current tasks | `tasks/todo.md` |
+| Mistakes & learnings | `tasks/lessons.md` |
+
+## プロジェクト固有ルール
+
+(Add anything specific to this project that differs from defaults)
+```
+
+### 8b. If `.claude/CLAUDE.md` already exists — update it
+
+Add the references table and the 開発ワークフロー section above into the existing file (preserve all existing content).
+
+### 8c. If detailed rules exist only in root `CLAUDE.md` — split bridge and detail
+
+Move the detailed rules into `.claude/CLAUDE.md`, then keep root `CLAUDE.md` as the thin bridge from Step 4.
+
+Then ensure source code and docs point to the correct file: root `CLAUDE.md` for Claude Code entry, `.claude/CLAUDE.md` for detailed project rules.
+
+---
+
+## Step 9: Verify
 
 Run these checks:
 
 1. `npm run test` — all existing tests still pass
 2. `echo '{"tool_input":{"file_path":"app/test.ts","content":"console.log(1)"}}' | bash .claude/hooks/check-code-quality.sh` — should output deny
 3. `echo '{"tool_input":{"file_path":"tests/test.test.ts","content":"console.log(1)"}}' | bash .claude/hooks/check-code-quality.sh` — should output nothing (allowed)
-4. Verify `memory/constitution.md` contains zero project-specific terms
+4. Verify `.claude/constitution.md` contains zero project-specific terms
+5. If the project is under `/Users/keigoyoshida`, run `node /Users/keigoyoshida/.codex/scripts/agent-context-audit.mjs` and confirm there are no `AGENTS.md` / `CLAUDE.md` one-sided entry gaps.
 
 ---
 
-## Step 9: Clean up
+## Step 10: Clean up
 
 After setup is complete, the `scaffold/` folder can be:
 
@@ -293,24 +466,31 @@ After completing all steps, the project will have:
 
 ```
 project/
-├── .claudeignore                # [Copied] Block AI from reading .env secrets
-├── AGENTS.md                    # [Generated] Cross-agent instructions
-├── commitlint.config.js         # [Copied] Commit message rules
-├── memory/
-│   └── constitution.md          # [Copied] 10 immutable principles
-├── specs/
-│   └── README.md                # [Copied] Spec-Driven workflow + templates
+├── .claudeignore                    # [Copied] Block AI from reading .env secrets
+├── AGENTS.md                        # [Generated] Cross-agent instructions
+├── CLAUDE.md                        # [Copied/Adjusted] Claude Code root bridge
+├── commitlint.config.js             # [Copied] Commit message rules
 ├── tasks/
-│   ├── todo.md                  # [Generated] Current sprint tasks
-│   └── lessons.md               # [Copied] Mistake/learning recorder
-├── docs/
-│   └── INDEX.md                 # [Generated] Document navigator (if docs/ exists)
+│   ├── todo.md                      # [Generated] Current sprint tasks
+│   └── lessons.md                   # [Copied] Mistake/learning recorder
 ├── .claude/
-│   ├── settings.json            # [Modified] Hooks added
+│   ├── AGENTS.md                    # [Copied] Codex bridge for .claude/
+│   ├── CLAUDE.md                    # [Modified] ワークフロー追加
+│   ├── PLANS.md                     # [Generated] プロジェクト別プラン一覧
+│   ├── constitution.md              # [Copied] 10 immutable principles
+│   ├── settings.json                # [Modified] Hooks added
+│   ├── 01_docs/                     # 設計書（WHY + 全体WHAT）
+│   │   └── 00_INDEX.md              # [Generated] Document navigator
+│   ├── 02_specs/                    # 仕様書（個別機能のWHAT + HOW + UI/UX）
+│   │   ├── README.md                # [Copied] Spec-Driven workflow + templates
+│   │   └── DEPRECATION_GUIDE.md     # [Copied] Spec status marking
+│   ├── 03_plans/                    # 作業計画
+│   │   ├── PLANS.md                 # [Generated] プロジェクト別プラン一覧
+│   │   └── files/                   # [Symlink] → ~/.claude/plans
 │   └── hooks/
-│       ├── check-code-quality.sh  # [Copied] Pre-write quality gate
-│       └── stop-reminder.sh       # [Copied] Session end reminder
+│       ├── check-code-quality.sh    # [Copied] Pre-write quality gate
+│       └── stop-reminder.sh         # [Copied] Session end reminder
 └── .husky/
-    ├── pre-commit               # [Generated] lint-staged
-    └── commit-msg               # [Generated] commitlint
+    ├── pre-commit                   # [Generated] lint-staged
+    └── commit-msg                   # [Generated] commitlint
 ```

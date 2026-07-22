@@ -1,6 +1,6 @@
 # スペック＆設計書レビュー
 
-> Input: レビュー対象（`specs/{number}/` または `docs/{number}`）
+> Input: レビュー対象（`.claude/02_specs/{feature-name}/` または `.claude/01_docs/{number}`）
 > Output: 弱点リスト + 精密化した修正
 > 所要時間: 1〜2時間
 > モード: プランモード推奨

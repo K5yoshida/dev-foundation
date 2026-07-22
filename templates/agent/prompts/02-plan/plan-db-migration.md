@@ -1,6 +1,6 @@
 # DB設計＆マイグレーション
 
-> Input: `specs/{number}-{name}/spec.md` の Data Model Changes セクション
+> Input: `.claude/02_specs/{feature-name}/spec.md` の Data Model Changes セクション
 > Output: マイグレーションSQL + RLSポリシー + TypeScript型定義更新
 > 所要時間: 30分〜1時間
 > モード: プランモード推奨
@@ -11,7 +11,7 @@
 
 ### Step 1: 既存スキーマ把握
 
-1. `docs/12_DB一覧.md` で全テーブル構造を確認
+1. `.claude/01_.claude/01_docs/12_DB一覧.md` で全テーブル構造を確認
 2. `supabase/migrations/` で適用済みマイグレーションを確認
 3. `lib/supabase/` で既存の型定義を確認
 
@@ -52,7 +52,7 @@ CREATE POLICY "{table}_tenant_isolation" ON {table}
 
 ### Step 6: 設計書同期
 
-- `docs/12_DB一覧.md` を更新（自然な統合で）
+- `.claude/01_.claude/01_docs/12_DB一覧.md` を更新（自然な統合で）
 
 ## 完了条件
 
@@ -60,7 +60,7 @@ CREATE POLICY "{table}_tenant_isolation" ON {table}
 - [ ] 全新規テーブルにRLSポリシーあり
 - [ ] `npx supabase db push` 成功（ローカル確認可能な場合）
 - [ ] 型定義が最新
-- [ ] `docs/12_DB一覧.md` 更新済み
+- [ ] `.claude/01_.claude/01_docs/12_DB一覧.md` 更新済み
 
 ## 禁止
 

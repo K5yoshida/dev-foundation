@@ -1,6 +1,6 @@
 # テスト骨格作成（Phase 0）
 
-> Input: `specs/{number}-{name}/plan.md` の Test Strategy セクション
+> Input: `.claude/02_specs/{feature-name}/plan.md` の Test Strategy セクション
 > Output: テストファイル骨格（describe blocks + .todo() テストケース）
 > 所要時間: 30分
 > タイミング: 実装コードを書く**前に**実行

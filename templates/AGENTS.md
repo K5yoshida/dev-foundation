@@ -3,6 +3,32 @@
 > Cross-agent instructions for all AI coding assistants (Claude Code, Codex, Gemini, Cursor, Copilot, etc.)
 > For Claude Code-specific rules, see `.claude/CLAUDE.md`.
 
+## Global Runtime Alignment
+
+This project inherits Yoshida's global AI-agent rules:
+
+1. `/Users/keigoyoshida/AGENTS.md` — cross-agent global rules for Codex and AGENTS.md-compatible assistants
+2. `/Users/keigoyoshida/CLAUDE.md` — Claude Code entry point for the home directory
+3. `/Users/keigoyoshida/.claude/CLAUDE.md` — detailed Claude Code operating principles
+
+When these files and this project file conflict, follow this order:
+
+1. Direct user request
+2. The closest project-specific `AGENTS.md` / `CLAUDE.md`
+3. `/Users/keigoyoshida/AGENTS.md`
+4. `/Users/keigoyoshida/.claude/CLAUDE.md`
+5. General best practices
+
+Core expectations:
+
+- Use Japanese honorific language when talking to Yoshida.
+- Make decisions from first principles, not from precedent alone.
+- Do not act on guesses; verify files, logs, docs, or live data first.
+- Do not edit files you have not read.
+- Before important changes, explain current state, problem, and user impact.
+- Ask before destructive operations, production impact, external sends, DB changes, dependency installs, permission changes, commits, pushes, or deploys.
+- Never expose secrets, API keys, tokens, or PII in logs or conversation.
+
 ## Commands
 
 ```bash
@@ -65,24 +91,24 @@ lib/                    # Utilities
   stripe/               # Stripe helpers
 widget/                 # Banner widget JS (independent build)
   src/                  # Widget source (Vanilla JS)
-docs/                   # Design documents (48 files, Japanese)
-specs/                  # Feature specifications (Spec-Driven Development)
-memory/                 # Immutable principles (portable)
 tasks/                  # Sprint tasks + lessons learned
 .agent/                 # Cross-agent orchestration & shared files
   shared/               # Shared logs (IMPLEMENTATION_STATUS, CONVICTION_LOG, LEARN_LOG)
   prompts/              # Prompt library (23 prompts, 9 categories)
-  docs/                 # Developer reference docs
-.claude/                # Claude Code-specific config (settings, hooks, skills)
+.claude/                # Claude Code config + all project documentation
+  01_docs/              # Design documents (WHY + 全体WHAT)
+  02_specs/             # Feature specifications (個別WHAT + HOW + UI/UX)
+  03_plans/             # Work plans (symlink → ~/.claude/plans)
+  constitution.md       # Immutable principles (portable)
 ```
 
 ## Before You Implement
 
-1. Read `docs/INDEX.md` for the document map, then read the relevant design doc
-2. Check `.agent/shared/IMPLEMENTATION_STATUS.md` for current priorities and v2 status
-3. If the feature has a spec, read `specs/{number}-{name}/`
-4. Complete the pre-implementation checklist: `docs/31_実装着手前チェックリスト.md`
-5. Review immutable principles: `memory/constitution.md`
+1. Read `/Users/keigoyoshida/AGENTS.md` and the nearest project `CLAUDE.md` / `.claude/CLAUDE.md`
+2. Read `.claude/01_docs/00_INDEX.md` for the document map, then read the relevant design doc
+3. Check `.claude/IMPLEMENTATION_STATUS.md` for current priorities
+4. If the feature has a spec, read `.claude/02_specs/{feature-name}/`
+5. Review immutable principles: `.claude/constitution.md`
 
 ## Coding Conventions
 
@@ -116,7 +142,7 @@ tasks/                  # Sprint tasks + lessons learned
 
 ## Decision Gates
 
-Every feature must pass 7 gates before implementation begins (see `docs/44_最高意思決定基準書.md`):
+Every feature must pass 7 gates before implementation begins (see `.claude/01_docs/44_最高意思決定基準書.md`):
 
 | Gate                   | Question                                                                |
 | ---------------------- | ----------------------------------------------------------------------- |
@@ -140,11 +166,11 @@ Every feature must pass 7 gates before implementation begins (see `docs/44_最�
 
 This project supports parallel development with multiple AI agents:
 
-1. **Specifications** in `specs/{N}-{name}/spec.md` define WHAT to build
-2. **Plans** in `specs/{N}-{name}/plan.md` define HOW to build it
-3. **Tasks** in `specs/{N}-{name}/tasks.md` list work units with `[P]` markers for parallelizable tasks
+1. **Specifications** in `.claude/02_specs/{feature-name}/spec.md` define WHAT to build
+2. **Plans** in `.claude/02_specs/{feature-name}/plan.md` define HOW to build it
+3. **Tasks** in `.claude/02_specs/{feature-name}/tasks.md` list work units with `[P]` markers for parallelizable tasks
 4. Agents pick up `[P]` tasks independently; non-`[P]` tasks run sequentially
-5. All agents share `memory/constitution.md` as immutable principles
+5. All agents share `.claude/constitution.md` as immutable principles
 
 ### Agent Roles
 
@@ -176,7 +202,7 @@ Rules:
 
 v2 Wave 1 is considered DONE when all 5 criteria pass:
 
-1. All 15 P0 specs have `spec.md` + `plan.md` + `tasks.md` in `specs/`
+1. All 15 P0 specs have `spec.md` + `plan.md` + `tasks.md` in `.claude/02_specs/`
 2. `npm run build` passes with 0 errors
 3. `npm run test:coverage` shows >= 80% coverage
 4. All P0 acceptance criteria marked `[x]` in their `spec.md`
@@ -194,7 +220,7 @@ v2 Wave 1 is considered DONE when all 5 criteria pass:
    └─ Shipした機能の ship-and-learn が未実行？
        → .agent/prompts/00-think/ship-and-learn.md を実行
 
-1. specs/ の状態を確認し、優先順位で判定:
+1. .claude/02_specs/ の状態を確認し、優先順位で判定:
    ├─ spec.md がない機能がある？ → 01-spec/spec-create.md
    ├─ plan.md がない機能がある？ → 02-plan/plan-create.md
    ├─ tasks.md に未実装タスクがある？ → 03-build/build-feature.md
@@ -214,9 +240,11 @@ v2 Wave 1 is considered DONE when all 5 criteria pass:
 
 ## What NOT to Do
 
-- Do NOT implement without reading the relevant design doc in `docs/`
+- Do NOT implement without reading the relevant design doc in `.claude/01_docs/`
 - Do NOT add external libraries to `widget/` (zero dependencies)
 - Do NOT skip `IMPLEMENTATION_STATUS.md` update after completing work
 - Do NOT allow cross-tenant data access (RLS enforced)
 - Do NOT create Supabase tables without RLS policies
+- Do NOT assume PR workflow; confirm the project's deploy/main reflection rule first
+- Do NOT print `.env`, service-role keys, API tokens, auth cookies, or personal information
 - Do NOT commit `console.log` statements or `.env` files

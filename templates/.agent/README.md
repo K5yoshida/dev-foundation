@@ -33,7 +33,7 @@ npm install -g @openai/codex
 npx tsx .agent/orchestrate.ts next
 ```
 
-プロジェクトの状態（CONVICTION_LOG, LEARN_LOG, specs/, IMPLEMENTATION_STATUS.md）を読み取り、最適なプロンプトを自動選択して実行します。
+プロジェクトの状態（CONVICTION_LOG, LEARN_LOG, .claude/02_specs/, IMPLEMENTATION_STATUS.md）を読み取り、最適なプロンプトを自動選択して実行します。
 
 ### タスク指定
 

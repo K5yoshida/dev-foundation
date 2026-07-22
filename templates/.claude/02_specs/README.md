@@ -1,14 +1,15 @@
-# specs/ — Specification-Driven Development
+# .claude/02_specs/ — Specification-Driven Development
 
 > Based on GitHub's spec-kit pattern.
 > Every feature gets its own folder. No code without a spec.
 
 ## Overview
 
-This folder holds feature specifications that bridge design docs (`docs/`) and implementation.
+This folder holds feature specifications that bridge design docs (`.claude/01_docs/`) and implementation.
 
-- `docs/` = the authoritative design (WHAT the product should be)
-- `specs/` = the implementation blueprint (HOW to build it, in what order)
+- `.claude/01_docs/` = the authoritative design (WHY + 全体WHAT)
+- `.claude/02_specs/` = the implementation blueprint (個別WHAT + HOW + UI/UX)
+- `.claude/03_plans/` = work plans created via Plan Mode (実装の手順書)
 - `tasks/` = the current sprint's work items
 
 ## Workflow
@@ -115,7 +116,7 @@ As a [persona], I want to [action], so that [outcome].
 ```markdown
 # plan: {Feature Name}
 
-> Spec: specs/{number}-{name}/spec.md
+> Spec: .claude/02_specs/{feature-name}/spec.md
 > Status: draft | review | approved
 > Created: YYYY-MM-DD
 
@@ -179,7 +180,7 @@ If something breaks:
 ```markdown
 # tasks: {Feature Name}
 
-> Plan: specs/{number}-{name}/plan.md
+> Plan: .claude/02_specs/{feature-name}/plan.md
 > Legend: [P] = parallelizable (can run on separate agents simultaneously)
 
 ## Phase 0: Test Skeleton

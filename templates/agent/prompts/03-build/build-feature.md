@@ -1,6 +1,6 @@
 # 機能実装
 
-> Input: `specs/{number}-{name}/tasks.md`
+> Input: `.claude/02_specs/{feature-name}/tasks.md`
 > Output: 実装コード + テスト + ビルド通過
 > 所要時間: 2〜6時間（機能規模による）
 > モード: プランモード必須
@@ -10,8 +10,8 @@
 ## 実装前チェック（省略禁止）
 
 1. `.agent/shared/IMPLEMENTATION_STATUS.md` で現在地を確認
-2. `specs/{number}-{name}/tasks.md` を読み、Phase順序を把握
-3. `specs/{number}-{name}/plan.md` で技術アプローチとファイル一覧を確認
+2. `.claude/02_specs/{feature-name}/tasks.md` を読み、Phase順序を把握
+3. `.claude/02_specs/{feature-name}/plan.md` で技術アプローチとファイル一覧を確認
 4. 関連する既存コードを読む（設計思想・パターン・命名規則を把握）
 5. 影響範囲を特定し報告
 

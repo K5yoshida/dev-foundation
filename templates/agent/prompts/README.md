@@ -170,7 +170,7 @@ product-conviction → spec-create(Step 0) → [実装] → ship-and-learn → p
        → ship-and-learn（学習を回収しろ）
 
 1. IMPLEMENTATION_STATUS.md を読む
-2. specs/ ディレクトリの状態を確認
+2. .claude/02_specs/ ディレクトリの状態を確認
 3. 以下の優先順位で判定:
 
    ┌─ P0スペックが0件？
@@ -209,10 +209,10 @@ product-conviction → spec-create(Step 0) → [実装] → ship-and-learn → p
 | ファイル                                 | 用途                     |
 | ---------------------------------------- | ------------------------ |
 | `.agent/shared/IMPLEMENTATION_STATUS.md` | 全体の進捗状況           |
-| `specs/*/spec.md`                        | 各機能のスペック         |
-| `specs/*/plan.md`                        | 各機能の実装計画         |
-| `specs/*/tasks.md`                       | 各機能のタスクリスト     |
-| `docs/`                                  | 設計書（同期チェック用） |
+| `.claude/02_specs/*/spec.md`                        | 各機能のスペック         |
+| `.claude/02_specs/*/plan.md`                        | 各機能の実装計画         |
+| `.claude/02_specs/*/tasks.md`                       | 各機能のタスクリスト     |
+| `.claude/01_docs/`                                  | 設計書（同期チェック用） |
 | `.agent/shared/CONVICTION_LOG.md`        | 確信度チェック履歴       |
 | `.agent/shared/LEARN_LOG.md`             | Ship後学習の履歴         |
 
@@ -223,12 +223,12 @@ product-conviction → spec-create(Step 0) → [実装] → ship-and-learn → p
 
 Claude:
 1. IMPLEMENTATION_STATUS.md を確認 → P0スペックが3/15完了
-2. specs/ を確認 → 2件が承認済みだがplan.mdなし
+2. .claude/02_specs/ を確認 → 2件が承認済みだがplan.mdなし
 3. 判定: plan-create が最優先
 
 回答: 「承認済みのスペックが2件あるのにまだ計画が立っていません。
        plan-create を実行して、実装計画を作りましょう。
-       対象: specs/banner-decision-engine/ と specs/proof-layer/」
+       対象: .claude/02_specs/banner-decision-engine/ と .claude/02_specs/proof-layer/」
 ```
 
 ---
